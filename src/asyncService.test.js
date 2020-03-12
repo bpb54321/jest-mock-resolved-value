@@ -26,8 +26,23 @@ describe('Jest mock resolved value study', () => {
     expect(firstResultOfServiceCall).toBe(secondResultOfServiceCall);
   });
 
+  test('A mock with resolved value set using the equivalent of jest.fn().mockResolvedValue ' +
+    'should always return a Promise whose resolved value is the same value that it was passed', async () => {
+
+    const value = {
+      data: "Some data"
+    };
+    asyncService.mockImplementation(() => {
+      return Promise.resolve(value);
+    });
+
+    const firstResultOfServiceCall = await asyncService();
+    const secondResultOfServiceCall = await asyncService();
+    expect(firstResultOfServiceCall).toBe(secondResultOfServiceCall);
+  });
+
   test('A mock with resolved value set using jest.fn().mockImplementation ' +
-    'should always return a Promise whose resolved value is unique, because that value was created from scratch ' +
+    'should return a Promise whose resolved value is unique, because that value was created from scratch ' +
     'inside a callback function which is called every time the mock is called', async () => {
     
     asyncService.mockImplementation(() => {
